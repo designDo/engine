@@ -145,7 +145,6 @@ class VirtualDisplayController {
        resizeAboveAndroidS(embeddedView, width, height, onNewSizeFrameAvailable);
        return;
     }
-    
     boolean isFocused = getView().isFocused();
     final SingleViewPresentation.PresentationState presentationState = presentation.detachState();
 
