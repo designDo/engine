@@ -133,16 +133,14 @@ class VirtualDisplayController {
   }
 
   public void resize(final int width, final int height, final Runnable onNewSizeFrameAvailable) {
-    final View embeddedView = getView();
-
-    //当 hotreload 触发 resize时，其实大小并没有发生改变，直接 return
+    // 当 hotreload 触发 resize时，其实大小并没有发生改变，直接 return
     if(bufferWidth == width && bufferHeight == height) {
-      embeddedView.postDelayed(onNewSizeFrameAvailable, 0);
+      getView().postDelayed(onNewSizeFrameAvailable, 0);
       return;
     }
 
     if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
-       resizeAboveAndroidS(embeddedView, width, height, onNewSizeFrameAvailable);
+       resizeAboveAndroidS(getView(), width, height, onNewSizeFrameAvailable);
        return;
     }
     boolean isFocused = getView().isFocused();
@@ -164,6 +162,8 @@ class VirtualDisplayController {
         (DisplayManager) context.getSystemService(Context.DISPLAY_SERVICE);
     virtualDisplay =
         displayManager.createVirtualDisplay("flutter-vd", width, height, densityDpi, surface, 0);
+
+    final View embeddedView = getView();
 
     // There's a bug in Android version older than O where view tree observer onDrawListeners don't
     // get properly
